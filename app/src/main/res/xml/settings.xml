@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="match_parent"
+    android:layout_width="match_parent">
+
+    <PreferenceCategory android:title="Parámetros de conexión al servidor">
+        <EditTextPreference
+            android:dialogTitle="Introduce la dirección IP del servidor"
+            android:key="fInternalName"
+            android:summary="Dirección IP del servidor"
+            android:title="Dirección IP del servidor" />
+        <EditTextPreference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:dialogTitle="Introduce el puerto de conexión al servidor"
+            android:key="fInternalName"
+            android:summary="Puerto de conexión al servidor"
+            android:title="Puerto del servidor" />
+    </PreferenceCategory>
+    <PreferenceCategory
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:title="Notificaciones">
+        <EditTextPreference
+            android:dialogTitle="Introduce la hora de notificacion de la frase del dia"
+            android:key="externalPath"
+            android:summary="Hora en la que se mostrará la notificación con la frase del dia"
+            android:title="Hora a la que se mostrará la frase del día" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="Datos del usuario">
+        <Preference
+            android:title="Nombre de usuario" />
+        <Preference
+            android:key="iUsernamePref"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:summary="Username" />
+        <Preference
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:title="Contraseña" />
+        <Preference
+            android:key="iPasswordPref"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:summary="Password" />
+    </PreferenceCategory>
+</PreferenceScreen>

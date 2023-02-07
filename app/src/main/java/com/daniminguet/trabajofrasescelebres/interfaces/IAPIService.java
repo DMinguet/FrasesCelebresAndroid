@@ -48,7 +48,7 @@ public interface IAPIService {
     Call<Boolean> addUsuario(@Body Usuario usuario);
 
     @POST("usuario/login")
-    Call<Boolean> logUsuario (
+    Call<Usuario> logUsuario (
             @Body Usuario user
     );
 }

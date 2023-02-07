@@ -16,6 +16,8 @@ import com.daniminguet.trabajofrasescelebres.models.Usuario;
 import com.daniminguet.trabajofrasescelebres.rest.RestClient;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.security.NoSuchAlgorithmException;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -40,7 +42,11 @@ public class LoginActivity extends AppCompatActivity {
         findViewById(R.id.btnLogin).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loginUser();
+                try {
+                    loginUser();
+                } catch (NoSuchAlgorithmException e) {
+                    throw new RuntimeException(e);
+                }
             }
         });
 
@@ -52,9 +58,9 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void loginUser() {
+    private void loginUser() throws NoSuchAlgorithmException {
         String username = etUsername.getText().toString();
-        String password = etPassword.getText().toString();
+        String password = HashGenerator.getSHAString(etPassword.getText().toString());
 
         if (username.isEmpty()) {
             etUsername.setError("Se requiere un nombre de usuario");
@@ -66,22 +72,24 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        Call<Boolean> booleanCall = apiService.logUsuario(new Usuario(username, password));
+        Usuario usuarioActivo = new Usuario(username, password);
 
-        booleanCall.enqueue(new Callback<Boolean>() {
+        Call<Usuario> usuarioCall = apiService.logUsuario(usuarioActivo);
+
+        usuarioCall.enqueue(new Callback<Usuario>() {
             @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 System.out.println(response.body());
-                if (response.body()) {
+                if (response.body() != null) {
                     Toast.makeText(LoginActivity.this, "Has iniciado sesión!", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class).putExtra("username", username));
+                    startActivity(new Intent(LoginActivity.this, MainActivity.class).putExtra("user", response.body()));
                 } else {
                     Toast.makeText(LoginActivity.this, "Usuario no válido", Toast.LENGTH_LONG).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
+            public void onFailure(Call<Usuario> call, Throwable t) {
                 Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });

@@ -4,11 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.TextView;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.preference.PreferenceManager;
 
 import com.daniminguet.trabajofrasescelebres.interfaces.IAPIService;
 import com.daniminguet.trabajofrasescelebres.models.Autor;
@@ -27,7 +30,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
+    private boolean tabletLayout;
     private IAPIService apiService;
+    private Usuario activeUser;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,15 +41,43 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         apiService = RestClient.getInstance();
-
         getAutores();
         getCategorias();
         getFrases();
         getUsuarios();
+        loadActiveUser();
 
-        String welcomeText = "Welcome " + getIntent().getStringExtra("username") + "!";
-        TextView tvBienvenida = findViewById(R.id.tvBienvenida);
-        tvBienvenida.setText(welcomeText);
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putString("usernamePref", activeUser.getNombre());
+        editor.putString("passwordPref", activeUser.getContrasenya());
+        editor.apply();
+
+    }
+
+    private void loadActiveUser() {
+        if (activeUser == null) {
+            activeUser = (Usuario) getIntent().getSerializableExtra("user");
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.iPreferencias) {
+            startActivity(new Intent(MainActivity.this, PreferencesActivity.class));
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     public void getAutores() {
@@ -205,28 +239,6 @@ public class MainActivity extends AppCompatActivity {
                         Log.i(MainActivity.class.getSimpleName(), "Frase añadida correctamente");
                     } else {
                         Log.i(MainActivity.class.getSimpleName(), "Error al añadir la frase");
-
-                        Log.i(MainActivity.class.getSimpleName(), response.raw().toString());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Boolean> call, @NonNull Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    public void addUsuario(Usuario usuario) {
-        apiService.addUsuario(usuario).enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(@NonNull Call<Boolean> call, @NonNull Response<Boolean> response) {
-                if(response.isSuccessful()) {
-                    if(response.body()) {
-                        Log.i(MainActivity.class.getSimpleName(), "Usuario añadida correctamente");
-                    } else {
-                        Log.i(MainActivity.class.getSimpleName(), "Error al añadir el usuario");
 
                         Log.i(MainActivity.class.getSimpleName(), response.raw().toString());
                     }
