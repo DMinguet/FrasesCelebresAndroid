@@ -13,8 +13,16 @@ public class RestClient {
 
     private static final String BASE_URL = "http://" + IP_CASA + ":" + PORT + "/";
 
-    private RestClient() {
+    public RestClient() {
 
+    }
+
+    public String obtenerIp() {
+        return IP_INSTI;
+    }
+
+    public int obtenerPuerto() {
+        return PORT;
     }
 
     public static synchronized IAPIService getInstance() {

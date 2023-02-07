@@ -7,14 +7,14 @@
     <PreferenceCategory android:title="Parámetros de conexión al servidor">
         <EditTextPreference
             android:dialogTitle="Introduce la dirección IP del servidor"
-            android:key="fInternalName"
+            android:key="ip"
             android:summary="Dirección IP del servidor"
             android:title="Dirección IP del servidor" />
         <EditTextPreference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:dialogTitle="Introduce el puerto de conexión al servidor"
-            android:key="fInternalName"
+            android:key="port"
             android:summary="Puerto de conexión al servidor"
             android:title="Puerto del servidor" />
     </PreferenceCategory>
@@ -29,8 +29,7 @@
             android:title="Hora a la que se mostrará la frase del día" />
     </PreferenceCategory>
     <PreferenceCategory android:title="Datos del usuario">
-        <Preference
-            android:title="Nombre de usuario" />
+        <Preference android:title="Nombre de usuario:" />
         <Preference
             android:key="iUsernamePref"
             android:layout_width="wrap_content"
@@ -39,7 +38,7 @@
         <Preference
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:title="Contraseña" />
+            android:title="Contraseña:" />
         <Preference
             android:key="iPasswordPref"
             android:layout_width="wrap_content"

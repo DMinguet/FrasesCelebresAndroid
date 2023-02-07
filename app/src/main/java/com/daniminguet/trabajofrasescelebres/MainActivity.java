@@ -34,12 +34,14 @@ public class MainActivity extends AppCompatActivity {
     private IAPIService apiService;
     private Usuario activeUser;
     private SharedPreferences prefs;
+    private RestClient restClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        restClient = new RestClient();
         apiService = RestClient.getInstance();
         getAutores();
         getCategorias();
@@ -52,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("usernamePref", activeUser.getNombre());
         editor.putString("passwordPref", activeUser.getContrasenya());
+        editor.putString("ip", restClient.obtenerIp());
+        editor.putString("port", String.valueOf(restClient.obtenerPuerto()));
         editor.apply();
 
     }
