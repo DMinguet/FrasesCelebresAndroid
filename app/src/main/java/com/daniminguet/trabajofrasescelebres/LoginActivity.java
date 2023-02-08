@@ -79,7 +79,6 @@ public class LoginActivity extends AppCompatActivity {
         usuarioCall.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                System.out.println(response.body());
                 if (response.body() != null) {
                     Toast.makeText(LoginActivity.this, "Has iniciado sesión!", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(LoginActivity.this, MainActivity.class).putExtra("user", response.body()));

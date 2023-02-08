@@ -11,9 +11,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
+import com.daniminguet.trabajofrasescelebres.fragments.FragmentAutores;
+import com.daniminguet.trabajofrasescelebres.fragments.FragmentCategorias;
+import com.daniminguet.trabajofrasescelebres.fragments.FragmentConsultas;
+import com.daniminguet.trabajofrasescelebres.fragments.FragmentFrasesAutor;
+import com.daniminguet.trabajofrasescelebres.fragments.FragmentFrasesCategoria;
+import com.daniminguet.trabajofrasescelebres.fragments.FragmentTodasFrases;
+import com.daniminguet.trabajofrasescelebres.fragments.FragmentPrincipal;
 import com.daniminguet.trabajofrasescelebres.interfaces.IAPIService;
+import com.daniminguet.trabajofrasescelebres.interfaces.IAutorListener;
+import com.daniminguet.trabajofrasescelebres.interfaces.ICategoriaListener;
 import com.daniminguet.trabajofrasescelebres.models.Autor;
 import com.daniminguet.trabajofrasescelebres.models.Categoria;
 import com.daniminguet.trabajofrasescelebres.models.Frase;
@@ -22,6 +32,7 @@ import com.daniminguet.trabajofrasescelebres.rest.RestClient;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -29,24 +40,37 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements FragmentPrincipal.IOnAttachListener,
+        FragmentTodasFrases.IOnAttachListener, FragmentAutores.IOnAttachListener, IAutorListener,
+        FragmentFrasesAutor.IOnAttachListener, FragmentCategorias.IOnAttachListener,
+        ICategoriaListener, FragmentFrasesCategoria.IOnAttachListener
+{
     private boolean tabletLayout;
     private IAPIService apiService;
     private Usuario activeUser;
     private SharedPreferences prefs;
     private RestClient restClient;
 
+    private List<Frase> frases = new ArrayList<>();
+    private List<Autor> autores = new ArrayList<>();
+    private Autor autorSeleccionado;
+    private List<Categoria> categorias = new ArrayList<>();
+    private Categoria categoriaSeleccionada;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        cargarDatos();
+    }
+
+    private void cargarDatos() {
         restClient = new RestClient();
         apiService = RestClient.getInstance();
         getAutores();
         getCategorias();
         getFrases();
-        getUsuarios();
         loadActiveUser();
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -57,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
         editor.putString("ip", restClient.obtenerIp());
         editor.putString("port", String.valueOf(restClient.obtenerPuerto()));
         editor.apply();
-
     }
 
     private void loadActiveUser() {
@@ -91,9 +114,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<List<Autor>> call, @NonNull Response<List<Autor>> response) {
                 if(response.isSuccessful()) {
                     assert response.body() != null;
-                    for(Autor autor: response.body()) {
-                        Log.i(MainActivity.class.getSimpleName(), autor.toString());
-                    }
+                    autores.addAll(response.body());
                 }
             }
 
@@ -110,9 +131,7 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<List<Categoria>> call, @NonNull Response<List<Categoria>> response) {
                 if(response.isSuccessful()) {
                     assert response.body() != null;
-                    for(Categoria categoria: response.body()) {
-                        Log.i(MainActivity.class.getSimpleName(), categoria.toString());
-                    }
+                    categorias.addAll(response.body());
                 }
             }
 
@@ -129,34 +148,13 @@ public class MainActivity extends AppCompatActivity {
             public void onResponse(@NonNull Call<List<Frase>> call, @NonNull Response<List<Frase>> response) {
                 if(response.isSuccessful()) {
                     assert response.body() != null;
-                    for(Frase frase: response.body()) {
-                        Log.i(MainActivity.class.getSimpleName(), frase.toString());
-                    }
+                    frases.addAll(response.body());
                 }
             }
 
             @Override
             public void onFailure(@NonNull Call<List<Frase>> call, @NonNull Throwable t) {
                 Toast.makeText(MainActivity.this, "No se han podido obtener las frases", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    public void getUsuarios() {
-        apiService.getUsers().enqueue(new Callback<List<Usuario>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Usuario>> call, @NonNull Response<List<Usuario>> response) {
-                if(response.isSuccessful()) {
-                    assert response.body() != null;
-                    for(Usuario usuario: response.body()) {
-                        Log.i(MainActivity.class.getSimpleName(), usuario.toString());
-                    }
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Usuario>> call, @NonNull Throwable t) {
-                Toast.makeText(MainActivity.this, "No se han podido obtener los usuarios", Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -254,5 +252,109 @@ public class MainActivity extends AppCompatActivity {
                 Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
+    }
+
+    /*
+    @Override
+    public Frase getFraseDelDia() {
+        Calendar calendar = Calendar.getInstance(new Locale("es"));
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        System.out.println(sdf.getCalendar());
+
+        Frase[] fraseDelDia = {null};
+
+
+        apiService.getFraseDelDia(calendar.getTime()).enqueue(new Callback<Frase>() {
+            @Override
+            public void onResponse(Call<Frase> call, Response<Frase> response) {
+                if(response.isSuccessful()) {
+                    fraseDelDia[0] = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Frase> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+            }
+        });
+
+        return fraseDelDia[0];
+    }
+
+     */
+
+    @Override
+    public Usuario getUser() {
+        if (activeUser == null) {
+            loadActiveUser();
+            return activeUser;
+        }
+        return activeUser;
+    }
+
+
+    @Override
+    public List<Frase> getFrasesConsultas() {
+        return frases;
+    }
+
+    @Override
+    public List<Autor> getAutoresConsultas() {
+        return autores;
+    }
+
+    @Override
+    public List<Autor> getAutoresAutores() {
+        return autores;
+    }
+
+    @Override
+    public void onAutorSeleccionado(int id) {
+        autorSeleccionado = autores.get(id);
+
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .replace(R.id.frgConsultas, FragmentFrasesAutor.class, null)
+                .commit();
+    }
+
+    @Override
+    public List<Frase> getFrasesAutor() {
+        return frases;
+    }
+
+    @Override
+    public Autor getAutorSeleccionado() {
+        return autorSeleccionado;
+    }
+
+    @Override
+    public List<Categoria> getCategoriasCategorias() {
+        return categorias;
+    }
+
+    @Override
+    public List<Frase> getFrasesCategoria() {
+        return frases;
+    }
+
+    @Override
+    public Categoria getCategoriaSeleccionada() {
+        return categoriaSeleccionada;
+    }
+
+    @Override
+    public void onCategoriaSeleccionada(int id) {
+        categoriaSeleccionada = categorias.get(id);
+
+        FragmentManager manager = getSupportFragmentManager();
+        manager.beginTransaction()
+                .setReorderingAllowed(true)
+                .addToBackStack(null)
+                .replace(R.id.frgConsultas, FragmentFrasesCategoria.class, null)
+                .commit();
     }
 }

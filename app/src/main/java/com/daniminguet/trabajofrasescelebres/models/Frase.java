@@ -2,6 +2,8 @@ package com.daniminguet.trabajofrasescelebres.models;
 
 import androidx.annotation.NonNull;
 
+import java.io.Serializable;
+
 public class Frase {
     private int id;
     private String texto;

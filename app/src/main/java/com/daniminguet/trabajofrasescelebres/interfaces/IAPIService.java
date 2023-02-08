@@ -14,10 +14,14 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 
 public interface IAPIService {
     @GET("frase/all")
     Call<List<Frase>> getFrases();
+
+    @GET("frase/dia/{dia}")
+    Call<Frase> getFraseDelDia(@Path("dia") Date dia);
 
     @POST("frase/add")
     Call<Boolean> addFrase(@Body Frase frase);

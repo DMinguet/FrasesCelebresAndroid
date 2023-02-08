@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ConstraintLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tvFrasesCelebres"
@@ -21,14 +22,59 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/tvFraseDia"
+        android:id="@+id/tvBienvenida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:text="FRASE DEL DÍA"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:layout_marginTop="30dp"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="@+id/tvFrasesCelebres"
         app:layout_constraintStart_toStartOf="@+id/tvFrasesCelebres"
         app:layout_constraintTop_toBottomOf="@+id/tvFrasesCelebres" />
+
+    <TextView
+        android:id="@+id/tvFraseDia"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="FRASE DEL DÍA"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/tvFrasesCelebres"
+        app:layout_constraintStart_toStartOf="@+id/tvFrasesCelebres"
+        app:layout_constraintTop_toBottomOf="@+id/tvBienvenida" />
+
+    <TextView
+        android:id="@+id/tvFraseCorrespondiente"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:text="TextView"
+        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
+        app:layout_constraintEnd_toEndOf="@+id/tvFraseDia"
+        app:layout_constraintStart_toStartOf="@+id/tvFraseDia"
+        app:layout_constraintTop_toBottomOf="@+id/tvFraseDia" />
+
+    <Button
+        android:id="@+id/btnConsultas"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="CONSULTAR FRASES"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvFraseCorrespondiente" />
+
+    <Button
+        android:id="@+id/btnAdmin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="100dp"
+        android:text="ADMINISTRAR"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnConsultas" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
