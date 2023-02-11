@@ -20,6 +20,9 @@ public interface IAPIService {
     @GET("frase/all")
     Call<List<Frase>> getFrases();
 
+    @GET("frase/all/{offset}")
+    Call<List<Frase>> getFrasesLimit(@Path("offset") int offset);
+
     @GET("frase/dia/{dia}")
     Call<Frase> getFraseDelDia(@Path("dia") Date dia);
 

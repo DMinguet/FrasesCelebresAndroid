@@ -12,12 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.daniminguet.trabajofrasescelebres.interfaces.IAPIService;
+import com.daniminguet.trabajofrasescelebres.models.Frase;
 import com.daniminguet.trabajofrasescelebres.models.Usuario;
 import com.daniminguet.trabajofrasescelebres.rest.RestClient;
 
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -89,7 +91,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<Usuario> call, Throwable t) {
-                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Error al iniciar sesión", Toast.LENGTH_LONG).show();
             }
         });
     }

@@ -4,7 +4,7 @@ import androidx.annotation.NonNull;
 
 import java.io.Serializable;
 
-public class Frase {
+public class Frase implements Serializable{
     private int id;
     private String texto;
     private String fechaprogramada;

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -32,7 +33,12 @@ import com.daniminguet.trabajofrasescelebres.rest.RestClient;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
 
@@ -46,12 +52,11 @@ public class MainActivity extends AppCompatActivity implements FragmentPrincipal
         ICategoriaListener, FragmentFrasesCategoria.IOnAttachListener
 {
     private boolean tabletLayout;
-    private IAPIService apiService;
+    private final IAPIService apiService = RestClient.getInstance();;
     private Usuario activeUser;
     private SharedPreferences prefs;
-    private RestClient restClient;
-
     private List<Frase> frases = new ArrayList<>();
+    private Frase frase;
     private List<Autor> autores = new ArrayList<>();
     private Autor autorSeleccionado;
     private List<Categoria> categorias = new ArrayList<>();
@@ -60,17 +65,19 @@ public class MainActivity extends AppCompatActivity implements FragmentPrincipal
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        System.out.println(getIntent().getSerializableExtra("fraseDia"));
+        frase = (Frase) getIntent().getSerializableExtra("fraseDia");
+        System.out.println(frase);
         setContentView(R.layout.activity_main);
 
         cargarDatos();
     }
 
     private void cargarDatos() {
-        restClient = new RestClient();
-        apiService = RestClient.getInstance();
         getAutores();
         getCategorias();
         getFrases();
+        getFrase();
         loadActiveUser();
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -78,8 +85,8 @@ public class MainActivity extends AppCompatActivity implements FragmentPrincipal
         SharedPreferences.Editor editor = prefs.edit();
         editor.putString("usernamePref", activeUser.getNombre());
         editor.putString("passwordPref", activeUser.getContrasenya());
-        editor.putString("ip", restClient.obtenerIp());
-        editor.putString("port", String.valueOf(restClient.obtenerPuerto()));
+        editor.putString("ip", RestClient.IP_INSTI);
+        editor.putString("port", String.valueOf(RestClient.PORT));
         editor.apply();
     }
 
@@ -109,7 +116,6 @@ public class MainActivity extends AppCompatActivity implements FragmentPrincipal
 
     public void getAutores() {
         apiService.getAutores().enqueue(new Callback<List<Autor>>() {
-
             @Override
             public void onResponse(@NonNull Call<List<Autor>> call, @NonNull Response<List<Autor>> response) {
                 if(response.isSuccessful()) {
@@ -155,6 +161,39 @@ public class MainActivity extends AppCompatActivity implements FragmentPrincipal
             @Override
             public void onFailure(@NonNull Call<List<Frase>> call, @NonNull Throwable t) {
                 Toast.makeText(MainActivity.this, "No se han podido obtener las frases", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    public void getFrasesLimit(int offset) {
+        apiService.getFrasesLimit(offset).enqueue(new Callback<List<Frase>>() {
+            @Override
+            public void onResponse(Call<List<Frase>> call, Response<List<Frase>> response) {
+                if (response.isSuccessful()) {
+                    assert response.body() != null;
+                    frases.addAll(response.body());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Frase>> call, Throwable t) {
+
+            }
+        });
+    }
+
+    public void getFrase() {
+        apiService.getFraseDelDia(new Date()).enqueue(new Callback<Frase>() {
+            @Override
+            public void onResponse(Call<Frase> call, Response<Frase> response) {
+                if(response.isSuccessful()) {
+                    frase = response.body();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Frase> call, Throwable t) {
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }
@@ -254,41 +293,10 @@ public class MainActivity extends AppCompatActivity implements FragmentPrincipal
         });
     }
 
-    /*
-    @Override
-    public Frase getFraseDelDia() {
-        Calendar calendar = Calendar.getInstance(new Locale("es"));
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-
-        System.out.println(sdf.getCalendar());
-
-        Frase[] fraseDelDia = {null};
-
-
-        apiService.getFraseDelDia(calendar.getTime()).enqueue(new Callback<Frase>() {
-            @Override
-            public void onResponse(Call<Frase> call, Response<Frase> response) {
-                if(response.isSuccessful()) {
-                    fraseDelDia[0] = response.body();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Frase> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-
-        return fraseDelDia[0];
-    }
-
-     */
-
     @Override
     public Usuario getUser() {
         if (activeUser == null) {
             loadActiveUser();
-            return activeUser;
         }
         return activeUser;
     }

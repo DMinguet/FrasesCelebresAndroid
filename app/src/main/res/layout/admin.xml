@@ -32,23 +32,23 @@
         app:layout_constraintTop_toBottomOf="@+id/tvFrasesCelebres" />
 
     <Button
-        android:id="@+id/btnAnyadirAutor"
+        android:id="@+id/btnAnyadirAutorAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="AÑADIR"
-        app:layout_constraintEnd_toStartOf="@+id/btnModificarAutor"
+        app:layout_constraintEnd_toStartOf="@+id/btnModificarAutorAdmin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <Button
-        android:id="@+id/btnModificarAutor"
+        android:id="@+id/btnModificarAutorAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="MODIFICAR"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnAnyadirAutor"
+        app:layout_constraintStart_toEndOf="@+id/btnAnyadirAutorAdmin"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <TextView
@@ -63,7 +63,7 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnModificarAutor" />
+        app:layout_constraintTop_toBottomOf="@+id/btnModificarAutorAdmin" />
 
     <Button
         android:id="@+id/btnAnyadirCategoria"
@@ -71,12 +71,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="AÑADIR"
-        app:layout_constraintEnd_toStartOf="@+id/btnModificarCategoria"
+        app:layout_constraintEnd_toStartOf="@+id/btnModificarCategoriaAdmin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
     <Button
-        android:id="@+id/btnModificarCategoria"
+        android:id="@+id/btnModificarCategoriaAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -94,26 +94,26 @@
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnModificarCategoria" />
+        app:layout_constraintTop_toBottomOf="@+id/btnModificarCategoriaAdmin" />
 
     <Button
-        android:id="@+id/btnAnyadirFrase"
+        android:id="@+id/btnAnyadirFraseAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="AÑADIR"
-        app:layout_constraintEnd_toStartOf="@+id/btnModificarFrase"
+        app:layout_constraintEnd_toStartOf="@+id/btnModificarFraseAdmin"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <Button
-        android:id="@+id/btnModificarFrase"
+        android:id="@+id/btnModificarFraseAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="MODIFICAR"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/btnAnyadirFrase"
+        app:layout_constraintStart_toEndOf="@+id/btnAnyadirFraseAdmin"
         app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     <Button
@@ -124,6 +124,6 @@
         android:text="VOLVER AL INICIO"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnModificarFrase" />
+        app:layout_constraintTop_toBottomOf="@+id/btnModificarFraseAdmin" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

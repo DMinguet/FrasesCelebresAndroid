@@ -7,22 +7,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RestClient {
     private static IAPIService instance;
-    private static final int PORT = 8080;
-    private static final String IP_CASA = "192.168.18.23";
-    private static final String IP_INSTI = "192.168.20.148";
+    public static final int PORT = 8080;
+    public static final String IP_CASA = "192.168.18.23";
+    public static final String IP_INSTI = "192.168.20.148";
 
     private static final String BASE_URL = "http://" + IP_CASA + ":" + PORT + "/";
 
     public RestClient() {
 
-    }
-
-    public String obtenerIp() {
-        return IP_INSTI;
-    }
-
-    public int obtenerPuerto() {
-        return PORT;
     }
 
     public static synchronized IAPIService getInstance() {

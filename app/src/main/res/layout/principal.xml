@@ -25,52 +25,30 @@
         android:id="@+id/tvBienvenida"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="100dp"
         android:text="TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        app:layout_constraintEnd_toEndOf="@+id/tvFrasesCelebres"
-        app:layout_constraintStart_toStartOf="@+id/tvFrasesCelebres"
-        app:layout_constraintTop_toBottomOf="@+id/tvFrasesCelebres" />
-
-    <TextView
-        android:id="@+id/tvFraseDia"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="FRASE DEL DÍA"
         android:textAppearance="@style/TextAppearance.AppCompat.Display1"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/tvFrasesCelebres"
         app:layout_constraintStart_toStartOf="@+id/tvFrasesCelebres"
-        app:layout_constraintTop_toBottomOf="@+id/tvBienvenida" />
-
-    <TextView
-        android:id="@+id/tvFraseCorrespondiente"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
-        android:text="TextView"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1"
-        app:layout_constraintEnd_toEndOf="@+id/tvFraseDia"
-        app:layout_constraintStart_toStartOf="@+id/tvFraseDia"
-        app:layout_constraintTop_toBottomOf="@+id/tvFraseDia" />
+        app:layout_constraintTop_toBottomOf="@+id/tvFrasesCelebres" />
 
     <Button
         android:id="@+id/btnConsultas"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="150dp"
         android:text="CONSULTAR FRASES"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tvFraseCorrespondiente" />
+        app:layout_constraintTop_toBottomOf="@+id/tvBienvenida" />
 
     <Button
         android:id="@+id/btnAdmin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="150dp"
         android:text="ADMINISTRAR"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
