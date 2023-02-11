@@ -14,6 +14,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 
 public interface IAPIService {
@@ -29,6 +30,9 @@ public interface IAPIService {
     @POST("frase/add")
     Call<Boolean> addFrase(@Body Frase frase);
 
+    @PUT("frase/update")
+    Call<Boolean> updateFrase(@Body Frase frase);
+
     @POST("frase/addValues")
     @FormUrlEncoded
     Call<Boolean> addFraseValues(@Field("texto") String texto,
@@ -42,11 +46,17 @@ public interface IAPIService {
     @POST("autor/add")
     Call<Boolean> addAutor(@Body Autor autor);
 
+    @PUT("autor/update")
+    Call<Boolean> updateAutor(@Body Autor autor);
+
     @GET("categoria/all")
     Call<List<Categoria>> getCategorias();
 
     @POST("categoria/add")
     Call<Boolean> addCategoria(@Body Categoria categoria);
+
+    @PUT("categoria/update")
+    Call<Boolean> updateCategoria(@Body Categoria categoria);
 
     @GET("usuario/all")
     Call<List<Usuario>> getUsers();

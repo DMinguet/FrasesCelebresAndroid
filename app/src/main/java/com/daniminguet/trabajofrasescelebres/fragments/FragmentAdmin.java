@@ -24,7 +24,7 @@ public class FragmentAdmin extends Fragment implements View.OnClickListener{
 
         Button btnAnyadirAutor = view.findViewById(R.id.btnAnyadirAutorAdmin);
         Button btnModificarAutor = view.findViewById(R.id.btnModificarAutorAdmin);
-        Button btnAnyadirCategoria = view.findViewById(R.id.btnAnyadirCategoria);
+        Button btnAnyadirCategoria = view.findViewById(R.id.btnAnyadirCategoriaAdmin);
         Button btnModificarCategoria = view.findViewById(R.id.btnModificarCategoriaAdmin);
         Button btnAnyadirFrase = view.findViewById(R.id.btnAnyadirFraseAdmin);
         Button btnModificarFrase = view.findViewById(R.id.btnModificarFraseAdmin);
@@ -61,32 +61,32 @@ public class FragmentAdmin extends Fragment implements View.OnClickListener{
                         .replace(R.id.frgPrincipal, FragmentModificarAutor.class, null)
                         .commit();
                 break;
-            case R.id.btnAnyadirCategoria:
+            case R.id.btnAnyadirCategoriaAdmin:
                 manager.beginTransaction()
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
-                        .replace(R.id.frgPrincipal, FragmentConsultas.class, null)
+                        .replace(R.id.frgPrincipal, FragmentAnyadirCategoria.class, null)
                         .commit();
                 break;
             case R.id.btnModificarCategoriaAdmin:
                 manager.beginTransaction()
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
-                        .replace(R.id.frgPrincipal, FragmentConsultas.class, null)
+                        .replace(R.id.frgPrincipal, FragmentModificarCategoria.class, null)
                         .commit();
                 break;
             case R.id.btnAnyadirFraseAdmin:
                 manager.beginTransaction()
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
-                        .replace(R.id.frgPrincipal, FragmentConsultas.class, null)
+                        .replace(R.id.frgPrincipal, FragmentAnyadirFrase.class, null)
                         .commit();
                 break;
             case R.id.btnModificarFraseAdmin:
                 manager.beginTransaction()
                         .setReorderingAllowed(true)
                         .addToBackStack(null)
-                        .replace(R.id.frgPrincipal, FragmentConsultas.class, null)
+                        .replace(R.id.frgPrincipal, FragmentModificarFrase.class, null)
                         .commit();
                 break;
             case R.id.btnVolverAdmin:

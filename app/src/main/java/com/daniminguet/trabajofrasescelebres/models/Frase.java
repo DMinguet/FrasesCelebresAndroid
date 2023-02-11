@@ -41,8 +41,16 @@ public class Frase implements Serializable{
         return this.fechaprogramada;
     }
 
+    public void setFechaprogramada(String fechaprogramada) {
+        this.fechaprogramada = fechaprogramada;
+    }
+
     public int getAutorId() {
         return this.autorId;
+    }
+
+    public void setAutorId(int autorId) {
+        this.autorId = autorId;
     }
 
     public int getCategoriaId() {

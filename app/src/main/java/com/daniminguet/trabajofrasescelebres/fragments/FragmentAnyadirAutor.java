@@ -71,6 +71,10 @@ public class FragmentAnyadirAutor extends Fragment {
                     etAnyoNacimiento.setError("Año de nacimiento no válido");
                     etAnyoNacimiento.requestFocus();
                     return;
+                } else if (!anyoMuerte.isEmpty() && Integer.parseInt(anyoNacimiento) > Integer.parseInt(anyoMuerte)) {
+                    etAnyoNacimiento.setError("El año de nacimiento no puede ser mayor que el de muerte");
+                    etAnyoNacimiento.requestFocus();
+                    return;
                 } else if (profesion.isEmpty()) {
                     etProfesion.setError("Se requiere una profesión");
                     etProfesion.requestFocus();

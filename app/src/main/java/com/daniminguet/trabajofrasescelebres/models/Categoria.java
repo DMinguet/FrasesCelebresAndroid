@@ -9,8 +9,7 @@ public class Categoria {
     public Categoria() {
     }
 
-    public Categoria(int id, String nombre) {
-        this.id = id;
+    public Categoria(String nombre) {
         this.nombre = nombre;
     }
 
