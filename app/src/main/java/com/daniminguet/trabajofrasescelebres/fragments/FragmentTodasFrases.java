@@ -11,9 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.daniminguet.trabajofrasescelebres.MainActivity;
 import com.daniminguet.trabajofrasescelebres.R;
-import com.daniminguet.trabajofrasescelebres.adaptadores.AdaptadorAutores;
 import com.daniminguet.trabajofrasescelebres.adaptadores.AdaptadorFrases;
 import com.daniminguet.trabajofrasescelebres.interfaces.IAPIService;
 import com.daniminguet.trabajofrasescelebres.models.Autor;

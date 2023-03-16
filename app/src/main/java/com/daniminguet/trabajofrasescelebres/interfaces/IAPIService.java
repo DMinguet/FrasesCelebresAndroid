@@ -24,21 +24,11 @@ public interface IAPIService {
     @GET("frase/all/{offset}")
     Call<List<Frase>> getFrasesLimit(@Path("offset") int offset);
 
-    @GET("frase/dia/{dia}")
-    Call<Frase> getFraseDelDia(@Path("dia") Date dia);
-
     @POST("frase/add")
     Call<Boolean> addFrase(@Body Frase frase);
 
     @PUT("frase/update")
     Call<Boolean> updateFrase(@Body Frase frase);
-
-    @POST("frase/addValues")
-    @FormUrlEncoded
-    Call<Boolean> addFraseValues(@Field("texto") String texto,
-                                 @Field("fechaProgramada") Date fechaProgramada,
-                                 @Field("idAutor") int idAutor,
-                                 @Field("idCategoria")int idCategoria);
 
     @GET("autor/all")
     Call<List<Autor>> getAutores();
@@ -57,9 +47,6 @@ public interface IAPIService {
 
     @PUT("categoria/update")
     Call<Boolean> updateCategoria(@Body Categoria categoria);
-
-    @GET("usuario/all")
-    Call<List<Usuario>> getUsers();
 
     @POST("usuario/add")
     Call<Boolean> addUsuario(@Body Usuario usuario);

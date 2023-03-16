@@ -3,6 +3,7 @@ package com.daniminguet.trabajofrasescelebres.fragments;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.DataSetObserver;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +18,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
@@ -29,7 +31,10 @@ import com.daniminguet.trabajofrasescelebres.models.Categoria;
 import com.daniminguet.trabajofrasescelebres.models.Frase;
 import com.daniminguet.trabajofrasescelebres.rest.RestClient;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -97,6 +102,7 @@ public class FragmentAnyadirFrase extends Fragment implements SpinnerAdapter {
                     tvAdvertencias.setText("");
 
                     btnAnyadir.setOnClickListener(new View.OnClickListener() {
+                        @RequiresApi(api = Build.VERSION_CODES.O)
                         @Override
                         public void onClick(View v) {
                             String frase = etFrase.getText().toString();
@@ -113,13 +119,23 @@ public class FragmentAnyadirFrase extends Fragment implements SpinnerAdapter {
                                 etFechaProgramada.setError("Se requiere una fecha programada");
                                 etFechaProgramada.requestFocus();
                                 return;
-                            } else if (fechaProgramada.length() > 10) {
-                                etFechaProgramada.setError("Fecha programada no válida");
+                            } else if (fechaProgramada.length() != 10) {
+                                etFechaProgramada.setError("Fecha programada no válida (yyyy-mm-dd)");
                                 etFechaProgramada.requestFocus();
                                 return;
                             } else if (!valido) {
                                 etFrase.setError("La frase ya está creada");
                                 etFrase.requestFocus();
+                                return;
+                            }
+
+                            try {
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                sdf.setLenient(false);
+                                sdf.parse(fechaProgramada);
+                            } catch (ParseException e) {
+                                etFechaProgramada.setError("Fecha programada no válida (yyyy-mm-dd)");
+                                etFechaProgramada.requestFocus();
                                 return;
                             }
 

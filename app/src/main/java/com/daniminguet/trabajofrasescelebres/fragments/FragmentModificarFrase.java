@@ -27,6 +27,8 @@ import com.daniminguet.trabajofrasescelebres.models.Categoria;
 import com.daniminguet.trabajofrasescelebres.models.Frase;
 import com.daniminguet.trabajofrasescelebres.rest.RestClient;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -110,7 +112,7 @@ public class FragmentModificarFrase extends Fragment implements SpinnerAdapter {
                     sCampos.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, campos));
 
                     Spinner sNuevoValor = view.findViewById(R.id.sNuevoValor);
-                    sNuevoValor.setVisibility(View.INVISIBLE);
+                    sNuevoValor.setVisibility(View.GONE);
 
                     EditText etNuevoValor = view.findViewById(R.id.etNuevoValorFrase);
                     etNuevoValor.setVisibility(View.VISIBLE);
@@ -127,23 +129,23 @@ public class FragmentModificarFrase extends Fragment implements SpinnerAdapter {
                             switch (campoSeleccionado) {
                                 case "Texto":
                                     etNuevoValor.setInputType(View.AUTOFILL_TYPE_TEXT);
-                                    sNuevoValor.setVisibility(View.INVISIBLE);
+                                    sNuevoValor.setVisibility(View.GONE);
                                     etNuevoValor.setVisibility(View.VISIBLE);
                                     break;
                                 case "Fecha programada":
                                     etNuevoValor.setInputType(View.AUTOFILL_TYPE_DATE);
-                                    sNuevoValor.setVisibility(View.INVISIBLE);
+                                    sNuevoValor.setVisibility(View.GONE);
                                     etNuevoValor.setVisibility(View.VISIBLE);
                                     break;
                                 case "Autor":
                                     sNuevoValor.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, nombresAutor));
                                     sNuevoValor.setVisibility(View.VISIBLE);
-                                    etNuevoValor.setVisibility(View.INVISIBLE);
+                                    etNuevoValor.setVisibility(View.GONE);
                                     break;
                                 case "Categoría":
                                     sNuevoValor.setAdapter(new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, nombresCategoria));
                                     sNuevoValor.setVisibility(View.VISIBLE);
-                                    etNuevoValor.setVisibility(View.INVISIBLE);
+                                    etNuevoValor.setVisibility(View.GONE);
                                     break;
                             }
                         }
@@ -153,9 +155,6 @@ public class FragmentModificarFrase extends Fragment implements SpinnerAdapter {
 
                         }
                     });
-
-
-
 
                     btnModificar.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -194,6 +193,16 @@ public class FragmentModificarFrase extends Fragment implements SpinnerAdapter {
                                         etNuevoValor.requestFocus();
                                         return;
                                     } else if (nuevoValor.length() > 10) {
+                                        etNuevoValor.setError("Fecha programada no válida (yyyy-mm-dd)");
+                                        etNuevoValor.requestFocus();
+                                        return;
+                                    }
+
+                                    try {
+                                        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                                        sdf.setLenient(false);
+                                        sdf.parse(nuevoValor);
+                                    } catch (ParseException e) {
                                         etNuevoValor.setError("Fecha programada no válida (yyyy-mm-dd)");
                                         etNuevoValor.requestFocus();
                                         return;

@@ -11,7 +11,7 @@ public class RestClient {
     public static final String IP_CASA = "192.168.18.23";
     public static final String IP_INSTI = "192.168.20.148";
 
-    private static final String BASE_URL = "http://" + IP_CASA + ":" + PORT + "/";
+    private static final String BASE_URL = "http://" + IP_INSTI + ":" + PORT + "/";
 
     public RestClient() {
 

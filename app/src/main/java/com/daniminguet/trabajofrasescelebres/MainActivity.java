@@ -3,6 +3,9 @@ package com.daniminguet.trabajofrasescelebres;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -13,10 +16,8 @@ import android.widget.Toast;
 import androidx.fragment.app.FragmentManager;
 import androidx.preference.PreferenceManager;
 
-import com.daniminguet.trabajofrasescelebres.fragments.FragmentAnyadirFrase;
 import com.daniminguet.trabajofrasescelebres.fragments.FragmentFrasesAutor;
 import com.daniminguet.trabajofrasescelebres.fragments.FragmentFrasesCategoria;
-import com.daniminguet.trabajofrasescelebres.fragments.FragmentTodasFrases;
 import com.daniminguet.trabajofrasescelebres.fragments.FragmentPrincipal;
 import com.daniminguet.trabajofrasescelebres.interfaces.IAPIService;
 import com.daniminguet.trabajofrasescelebres.interfaces.IAutorListener;
@@ -27,7 +28,9 @@ import com.daniminguet.trabajofrasescelebres.models.Frase;
 import com.daniminguet.trabajofrasescelebres.models.Usuario;
 import com.daniminguet.trabajofrasescelebres.rest.RestClient;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -41,8 +44,7 @@ public class MainActivity extends AppCompatActivity implements FragmentPrincipal
 {
     private final IAPIService apiService = RestClient.getInstance();;
     private Usuario activeUser;
-    private List<Frase> frases;
-    private Frase frase;
+    private Frase fraseDelDia;
     private List<Autor> autores;
     private Autor autorSeleccionado;
     private List<Categoria> categorias;
@@ -53,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements FragmentPrincipal
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        frases = new ArrayList<>();
         autores = new ArrayList<>();
         categorias = new ArrayList<>();
 
@@ -63,9 +64,22 @@ public class MainActivity extends AppCompatActivity implements FragmentPrincipal
     private void cargarDatos() {
         getAutores();
         getCategorias();
-        getFrases();
-        getFrase();
+        loadFraseDia();
         loadActiveUser();
+
+        Intent notifyIntent = new Intent(this, CrearNotificacion.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast
+                (this, 1, notifyIntent, PendingIntent.FLAG_IMMUTABLE);
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeInMillis(System.currentTimeMillis());
+        calendar.set(Calendar.HOUR_OF_DAY, 16);
+        calendar.set(Calendar.MINUTE, 40);
+        calendar.set(Calendar.SECOND, 59);
+
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY, pendingIntent);
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
@@ -80,6 +94,14 @@ public class MainActivity extends AppCompatActivity implements FragmentPrincipal
     private void loadActiveUser() {
         if (activeUser == null) {
             activeUser = (Usuario) getIntent().getSerializableExtra("user");
+        }
+    }
+
+
+
+    private void loadFraseDia() {
+        if (fraseDelDia == null) {
+            fraseDelDia = (Frase) getIntent().getSerializableExtra("frase");
         }
     }
 
@@ -135,45 +157,22 @@ public class MainActivity extends AppCompatActivity implements FragmentPrincipal
         });
     }
 
-    public void getFrases() {
-        apiService.getFrases().enqueue(new Callback<List<Frase>>() {
-            @Override
-            public void onResponse(@NonNull Call<List<Frase>> call, @NonNull Response<List<Frase>> response) {
-                if(response.isSuccessful()) {
-                    assert response.body() != null;
-                    frases.addAll(response.body());
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<List<Frase>> call, @NonNull Throwable t) {
-                Toast.makeText(MainActivity.this, "No se han podido obtener las frases", Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
-    public void getFrase() {
-        apiService.getFraseDelDia(new Date()).enqueue(new Callback<Frase>() {
-            @Override
-            public void onResponse(Call<Frase> call, Response<Frase> response) {
-                if(response.isSuccessful()) {
-                    frase = response.body();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Frase> call, Throwable t) {
-                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_LONG).show();
-            }
-        });
-    }
-
     @Override
     public Usuario getUser() {
         if (activeUser == null) {
             loadActiveUser();
+            loadFraseDia();
         }
         return activeUser;
+    }
+
+    @Override
+    public Frase getFraseDia() {
+        if (fraseDelDia == null) {
+            loadFraseDia();
+            loadActiveUser();
+        }
+        return fraseDelDia;
     }
 
     @Override

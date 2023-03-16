@@ -1,5 +1,6 @@
 package com.daniminguet.trabajofrasescelebres;
 
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -19,7 +21,9 @@ import com.daniminguet.trabajofrasescelebres.rest.RestClient;
 import java.io.IOException;
 import java.io.Serializable;
 import java.security.NoSuchAlgorithmException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -30,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private IAPIService apiService;
     private EditText etUsername, etPassword;
+    private Usuario usuarioActivo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -74,7 +79,7 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        Usuario usuarioActivo = new Usuario(username, password);
+        usuarioActivo = new Usuario(username, password);
 
         Call<Usuario> usuarioCall = apiService.logUsuario(usuarioActivo);
 
@@ -83,7 +88,30 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                 if (response.body() != null) {
                     Toast.makeText(LoginActivity.this, "Has iniciado sesión!", Toast.LENGTH_LONG).show();
-                    startActivity(new Intent(LoginActivity.this, MainActivity.class).putExtra("user", response.body()));
+                    usuarioActivo = response.body();
+                    apiService.getFrases().enqueue(new Callback<List<Frase>>() {
+                        @Override
+                        public void onResponse(@NonNull Call<List<Frase>> call, @NonNull Response<List<Frase>> response) {
+                            if(response.isSuccessful()) {
+                                assert response.body() != null;
+
+                                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                                Date fechaHoy = new Date();
+
+                                for (Frase fraseFecha : response.body()) {
+                                    if (fraseFecha.getFechaprogramada().equalsIgnoreCase(sdf.format(fechaHoy))) {
+                                        startActivity(new Intent(LoginActivity.this, MainActivity.class).putExtra("user", usuarioActivo).putExtra("frase", fraseFecha));
+                                    }
+                                }
+                            }
+                        }
+
+                        @Override
+                        public void onFailure(@NonNull Call<List<Frase>> call, @NonNull Throwable t) {
+                            Toast.makeText(LoginActivity.this, "No se han podido obtener las frases", Toast.LENGTH_LONG).show();
+                        }
+                    });
                 } else {
                     Toast.makeText(LoginActivity.this, "Usuario no válido", Toast.LENGTH_LONG).show();
                 }

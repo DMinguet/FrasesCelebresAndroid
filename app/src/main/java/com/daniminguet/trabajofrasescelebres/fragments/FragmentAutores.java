@@ -39,16 +39,14 @@ public class FragmentAutores extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         IAPIService apiService = RestClient.getInstance();
         RecyclerView rvLista = view.findViewById(R.id.rvLista);
-        List<Autor> autores = new ArrayList<>();
 
         apiService.getAutores().enqueue(new Callback<List<Autor>>() {
             @Override
             public void onResponse(@NonNull Call<List<Autor>> call, @NonNull Response<List<Autor>> response) {
                 if(response.isSuccessful()) {
                     assert response.body() != null;
-                    autores.addAll(response.body());
 
-                    AdaptadorAutores adaptadorAutores = new AdaptadorAutores(autores, listener);
+                    AdaptadorAutores adaptadorAutores = new AdaptadorAutores(response.body(), listener);
                     rvLista.setHasFixedSize(true);
                     rvLista.setAdapter(adaptadorAutores);
                     rvLista.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));

@@ -97,6 +97,14 @@ public class FragmentModificarAutor extends Fragment implements SpinnerAdapter {
                                     autorCorrespondiente.setNombre(nuevoValor);
                                     break;
                                 case "Nacimiento":
+                                    try {
+                                        int nacimiento = Integer.parseInt(nuevoValor);
+                                    } catch (NumberFormatException nfe) {
+                                        etNuevoValor.setError("Indica la fecha de nacimiento en números");
+                                        etNuevoValor.requestFocus();
+                                        return;
+                                    }
+
                                     if (nuevoValor.length() > 4) {
                                         etNuevoValor.setError("Año de nacimiento no válido");
                                         etNuevoValor.requestFocus();

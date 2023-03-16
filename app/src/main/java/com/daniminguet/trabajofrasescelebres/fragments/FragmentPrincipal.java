@@ -26,9 +26,11 @@ import java.util.Random;
 public class FragmentPrincipal extends Fragment {
     public interface IOnAttachListener {
         Usuario getUser();
+        Frase getFraseDia();
     }
 
     private Usuario user;
+    private Frase frase;
 
     public FragmentPrincipal() {
         super(R.layout.principal);
@@ -38,11 +40,12 @@ public class FragmentPrincipal extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         TextView tvBienvenida = view.findViewById(R.id.tvBienvenida);
+        TextView tvFrase = view.findViewById(R.id.tvFraseDia);
         Button btnConsultas = view.findViewById(R.id.btnConsultas);
         Button btnAdmin = view.findViewById(R.id.btnAdmin);
 
         tvBienvenida.setText("Hola de nuevo " + user.getNombre() + "!");
-
+        tvFrase.setText(frase.getTexto());
 
         if (user.getAdmin() == 0) {
             btnAdmin.setVisibility(View.INVISIBLE);
@@ -78,5 +81,6 @@ public class FragmentPrincipal extends Fragment {
         super.onAttach(context);
         IOnAttachListener attachListener = (IOnAttachListener) context;
         user = attachListener.getUser();
+        frase = attachListener.getFraseDia();
     }
 }

@@ -26,7 +26,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class FragmentCategorias extends Fragment {
-    private List<Categoria> categorias;
     private ICategoriaListener listener;
     public FragmentCategorias() {
         super(R.layout.lista);
@@ -37,16 +36,14 @@ public class FragmentCategorias extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         IAPIService apiService = RestClient.getInstance();
         RecyclerView rvLista = view.findViewById(R.id.rvLista);
-        categorias = new ArrayList<>();
 
         apiService.getCategorias().enqueue(new Callback<List<Categoria>>() {
             @Override
             public void onResponse(@NonNull Call<List<Categoria>> call, @NonNull Response<List<Categoria>> response) {
                 if(response.isSuccessful()) {
                     assert response.body() != null;
-                    categorias.addAll(response.body());
 
-                    AdaptadorCategorias adaptadorCategorias = new AdaptadorCategorias(categorias, listener);
+                    AdaptadorCategorias adaptadorCategorias = new AdaptadorCategorias(response.body(), listener);
                     rvLista.setHasFixedSize(true);
                     rvLista.setAdapter(adaptadorCategorias);
                     rvLista.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));

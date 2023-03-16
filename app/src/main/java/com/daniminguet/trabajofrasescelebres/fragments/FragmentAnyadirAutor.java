@@ -55,6 +55,14 @@ public class FragmentAnyadirAutor extends Fragment {
                 String profesion = etProfesion.getText().toString();
                 comprobarAutor(nombre);
 
+                try {
+                    int nacimiento = Integer.parseInt(anyoNacimiento);
+                } catch (NumberFormatException nfe) {
+                    etAnyoNacimiento.setError("Indica la fecha de nacimiento en números");
+                    etAnyoNacimiento.requestFocus();
+                    return;
+                }
+
                 if (nombre.isEmpty()) {
                     etNombre.setError("Se requiere un nombre de autor");
                     etNombre.requestFocus();
